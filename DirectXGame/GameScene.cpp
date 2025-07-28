@@ -76,6 +76,7 @@ void GameScene::Initialize() {
 		auto it = models.find(objectData.file_name);
 		if (it == models.end()) {
 			model = Model::CreateFromOBJ(objectData.file_name);
+			
 			models[objectData.file_name] = model;
 		}
 	}

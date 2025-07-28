@@ -2913,7 +2913,7 @@ JSON_HEDLEY_DIAGNOSTIC_POP
 #define NLOHMANN_CAN_CALL_STD_FUNC_IMPL(std_name)                                 \
     namespace detail {                                                            \
     using std::std_name;                                                          \
-    \zz
+    \
     template<typename... T>                                                       \
     using result_of_##std_name = decltype(std_name(std::declval<T>()...));        \
     }                                                                             \
