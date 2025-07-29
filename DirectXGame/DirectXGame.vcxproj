@@ -109,7 +109,6 @@
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="WorldTransformEx.cpp" />
@@ -196,7 +195,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="MainScene.h" />
     <ClInclude Include="StageSelect.h" />
     <ClInclude Include="Title.h" />
   </ItemGroup>

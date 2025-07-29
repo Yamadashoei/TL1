@@ -42,6 +42,10 @@ private:
 
 	LevelData* levelData = nullptr; 
 	std::map<std::string, KamataEngine::Model*> models;
-
 	std::vector<KamataEngine::WorldTransform*> objects;
+
+	// Player
+	KamataEngine::Model* playerModel_ = nullptr;
+	KamataEngine::WorldTransform playerTransform_;
+
 };

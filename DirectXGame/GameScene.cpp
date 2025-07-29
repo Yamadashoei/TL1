@@ -11,10 +11,13 @@ using namespace KamataEngine;
 GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
+
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	camera_.Initialize();
+
+	playerModel_ = Model::CreateFromOBJ("player");
 
 	// JSON読み込み
 	const std::string fullpath = std::string("Resources/levels/") + "scene.json";
@@ -70,32 +73,42 @@ void GameScene::Initialize() {
 			}
 		}
 	}
-
+	// モデルの読み込み
 	for (auto& objectData : levelData->objects) {
 		Model* model = nullptr;
 		auto it = models.find(objectData.file_name);
 		if (it == models.end()) {
 			model = Model::CreateFromOBJ(objectData.file_name);
-			
 			models[objectData.file_name] = model;
 		}
 	}
 
+	// オブジェクト生成
 	for (auto& objectData : levelData->objects) {
-		WorldTransform* newObject = new WorldTransform;
-		newObject->translation_ = objectData.transform.translation;
-		newObject->rotation_ = objectData.transform.rotation;
-		newObject->scale_ = objectData.transform.scaling;
-		newObject->Initialize();
-		objects.push_back(newObject);
+		if (objectData.name == "player") {
+			playerModel_ = models[objectData.file_name];
+			playerTransform_.translation_ = objectData.transform.translation;
+			playerTransform_.rotation_ = objectData.transform.rotation;
+			playerTransform_.scale_ = objectData.transform.scaling;
+			playerTransform_.Initialize(); 
+		} else {
+			WorldTransform* newObject = new WorldTransform;
+			newObject->translation_ = objectData.transform.translation;
+			newObject->rotation_ = objectData.transform.rotation;
+			newObject->scale_ = objectData.transform.scaling;
+			newObject->Initialize();
+			objects.push_back(newObject);
+		}
 	}
-
 }
+
+
 
 void GameScene::Update() {
 	for (WorldTransform* object : objects) {
 		object->TransferMatrix();
 	}
+	playerTransform_.TransferMatrix();
 }
 
 void GameScene::Draw() {
@@ -109,7 +122,9 @@ void GameScene::Draw() {
 	// 3Dオブジェクト
 	Model::PreDraw(commandList);
 
-	int i = 0;
+	playerModel_->Draw(playerTransform_, camera_);
+
+	/*int i = 0;
 	for (auto& objectData : levelData->objects) {
 		Model* model = nullptr;
 		auto it = models.find(objectData.file_name);
@@ -120,7 +135,7 @@ void GameScene::Draw() {
 			model->Draw(*objects[i], camera_);
 		}
 		i++;
-	}
+	}*/
 
 	Model::PostDraw();
 

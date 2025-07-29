@@ -57,9 +57,6 @@
     <ClCompile Include="GameClear.cpp">
       <Filter>scene\clear</Filter>
     </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>scene\main</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -122,9 +119,6 @@
     </ClInclude>
     <ClInclude Include="GameClear.h">
       <Filter>scene\clear</Filter>
-    </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>scene\main</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>ヘッダー ファイル</Filter>
