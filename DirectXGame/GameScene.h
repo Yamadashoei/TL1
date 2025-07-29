@@ -59,4 +59,8 @@ private:
 	KamataEngine::Model* planeModel_ = nullptr;
 	KamataEngine::WorldTransform planeTransform_;
 
+	//enemy3体
+	KamataEngine::Model* enemyModel_ = nullptr;
+	std::vector<KamataEngine::WorldTransform*> enemyTransforms_;
+
 };

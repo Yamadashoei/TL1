@@ -6,6 +6,8 @@
 #include <fstream>
 #include <vector>
 
+#include <DirectXMath.h>
+
 using namespace KamataEngine;
 
 GameScene::~GameScene() {
@@ -61,7 +63,7 @@ void GameScene::SceneJson() {
 			objectData.transform.rotation.x = -(float)transform["rotation"][0];
 			objectData.transform.rotation.y = -(float)transform["rotation"][2];
 			objectData.transform.rotation.z = (float)transform["rotation"][1];
-
+			
 			objectData.transform.scaling.x = (float)transform["scaling"][0];
 			objectData.transform.scaling.y = (float)transform["scaling"][2];
 			objectData.transform.scaling.z = (float)transform["scaling"][1];
@@ -95,6 +97,16 @@ void GameScene::SceneJson() {
 			planeTransform_.rotation_ = objectData.transform.rotation;
 			planeTransform_.scale_ = objectData.transform.scaling;
 			planeTransform_.Initialize();
+		} else if (objectData.name.find("enemy") != std::string::npos) {
+			if (!enemyModel_) {
+				enemyModel_ = Model::CreateFromOBJ(objectData.file_name);
+			}
+			WorldTransform* enemyTransform = new WorldTransform;
+			enemyTransform->translation_ = objectData.transform.translation;
+			enemyTransform->rotation_ = objectData.transform.rotation;
+			enemyTransform->scale_ = objectData.transform.scaling;
+			enemyTransform->Initialize();
+			enemyTransforms_.push_back(enemyTransform);
 		} else {
 			WorldTransform* newObject = new WorldTransform;
 			newObject->translation_ = objectData.transform.translation;
@@ -114,6 +126,8 @@ void GameScene::Initialize() {
 
 	playerModel_ = Model::CreateFromOBJ("player");
 	planeModel_ = Model::CreateFromOBJ("plane");
+	enemyModel_ = Model::CreateFromOBJ("enemy");
+	
 	// jsonファイルの関数
 	SceneJson();
 
@@ -139,20 +153,14 @@ void GameScene::Draw() {
 	// 3Dオブジェクト
 	Model::PreDraw(commandList);
 
+	//player
 	playerModel_->Draw(playerTransform_, camera_);
+	// Plane
 	planeModel_->Draw(planeTransform_, camera_);
-	/*int i = 0;
-	for (auto& objectData : levelData->objects) {
-	    Model* model = nullptr;
-	    auto it = models.find(objectData.file_name);
-	    if (it != models.end()) {
-	        model = it->second;
-	    }
-	    if (model) {
-	        model->Draw(*objects[i], camera_);
-	    }
-	    i++;
-	}*/
+	//enemy
+	for (WorldTransform* enemy : enemyTransforms_) {
+		enemyModel_->Draw(*enemy, camera_);
+	}
 
 	Model::PostDraw();
 
