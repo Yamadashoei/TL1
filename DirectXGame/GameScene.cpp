@@ -89,6 +89,12 @@ void GameScene::SceneJson() {
 			playerTransform_.rotation_ = objectData.transform.rotation;
 			playerTransform_.scale_ = objectData.transform.scaling;
 			playerTransform_.Initialize();
+		} else if (objectData.name == "plane") {
+			planeModel_ = models[objectData.file_name];
+			planeTransform_.translation_ = objectData.transform.translation;
+			planeTransform_.rotation_ = objectData.transform.rotation;
+			planeTransform_.scale_ = objectData.transform.scaling;
+			planeTransform_.Initialize();
 		} else {
 			WorldTransform* newObject = new WorldTransform;
 			newObject->translation_ = objectData.transform.translation;
@@ -107,7 +113,7 @@ void GameScene::Initialize() {
 	camera_.Initialize();
 
 	playerModel_ = Model::CreateFromOBJ("player");
-
+	planeModel_ = Model::CreateFromOBJ("plane");
 	// jsonファイルの関数
 	SceneJson();
 
@@ -118,6 +124,8 @@ void GameScene::Update() {
 		object->TransferMatrix();
 	}
 	playerTransform_.TransferMatrix();
+	planeTransform_.TransferMatrix();
+
 }
 
 void GameScene::Draw() {
@@ -132,7 +140,7 @@ void GameScene::Draw() {
 	Model::PreDraw(commandList);
 
 	playerModel_->Draw(playerTransform_, camera_);
-
+	planeModel_->Draw(planeTransform_, camera_);
 	/*int i = 0;
 	for (auto& objectData : levelData->objects) {
 	    Model* model = nullptr;

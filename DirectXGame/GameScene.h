@@ -53,6 +53,10 @@ private:
 
 	// Player
 	KamataEngine::Model* playerModel_ = nullptr;
-	// Playerのワールドトランスフォーム
-	KamataEngine::WorldTransform playerTransform_;
+	KamataEngine::WorldTransform playerTransform_;// Playerのワールドトランスフォーム
+
+	// Plane
+	KamataEngine::Model* planeModel_ = nullptr;
+	KamataEngine::WorldTransform planeTransform_;
+
 };
