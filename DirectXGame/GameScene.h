@@ -35,17 +35,24 @@ public:
 	void Draw();
 
 private:
+	// 初期化補助関数
+	void SceneJson();
+
+private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Audio* audio_ = nullptr;
 	KamataEngine::Camera camera_;
 
-	LevelData* levelData = nullptr; 
+	// レベルデータ
+	LevelData* levelData = nullptr;
+	// JSONファイルから読み込んだモデルデータ
 	std::map<std::string, KamataEngine::Model*> models;
+	// オブジェクトのワールドトランスフォーム
 	std::vector<KamataEngine::WorldTransform*> objects;
 
 	// Player
 	KamataEngine::Model* playerModel_ = nullptr;
+	// Playerのワールドトランスフォーム
 	KamataEngine::WorldTransform playerTransform_;
-
 };

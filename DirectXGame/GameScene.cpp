@@ -8,17 +8,15 @@
 
 using namespace KamataEngine;
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	// オブジェクトのメモリ解放
+	for (WorldTransform* obj : objects) {
+		delete obj;
+	}
+	delete levelData;
+}
 
-void GameScene::Initialize() {
-
-	dxCommon_ = DirectXCommon::GetInstance();
-	input_ = Input::GetInstance();
-	audio_ = Audio::GetInstance();
-	camera_.Initialize();
-
-	playerModel_ = Model::CreateFromOBJ("player");
-
+void GameScene::SceneJson() {
 	// JSON読み込み
 	const std::string fullpath = std::string("Resources/levels/") + "scene.json";
 	// JSONファイルを開く
@@ -90,7 +88,7 @@ void GameScene::Initialize() {
 			playerTransform_.translation_ = objectData.transform.translation;
 			playerTransform_.rotation_ = objectData.transform.rotation;
 			playerTransform_.scale_ = objectData.transform.scaling;
-			playerTransform_.Initialize(); 
+			playerTransform_.Initialize();
 		} else {
 			WorldTransform* newObject = new WorldTransform;
 			newObject->translation_ = objectData.transform.translation;
@@ -102,7 +100,18 @@ void GameScene::Initialize() {
 	}
 }
 
+void GameScene::Initialize() {
+	dxCommon_ = DirectXCommon::GetInstance();
+	input_ = Input::GetInstance();
+	audio_ = Audio::GetInstance();
+	camera_.Initialize();
 
+	playerModel_ = Model::CreateFromOBJ("player");
+
+	// jsonファイルの関数
+	SceneJson();
+
+}
 
 void GameScene::Update() {
 	for (WorldTransform* object : objects) {
@@ -126,15 +135,15 @@ void GameScene::Draw() {
 
 	/*int i = 0;
 	for (auto& objectData : levelData->objects) {
-		Model* model = nullptr;
-		auto it = models.find(objectData.file_name);
-		if (it != models.end()) {
-			model = it->second;
-		}
-		if (model) {
-			model->Draw(*objects[i], camera_);
-		}
-		i++;
+	    Model* model = nullptr;
+	    auto it = models.find(objectData.file_name);
+	    if (it != models.end()) {
+	        model = it->second;
+	    }
+	    if (model) {
+	        model->Draw(*objects[i], camera_);
+	    }
+	    i++;
 	}*/
 
 	Model::PostDraw();
