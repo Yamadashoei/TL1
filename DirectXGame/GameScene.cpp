@@ -124,12 +124,18 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	camera_.Initialize();
 
+	//カメラの位置・向き設定
+	camera_.translation_ = {-15.0f, 10.0f, -8.0f}; 
+	camera_.rotation_ = {0.3f, 1.3f, 0.0f};
+	camera_.UpdateMatrix(); 
+
 	playerModel_ = Model::CreateFromOBJ("player");
 	planeModel_ = Model::CreateFromOBJ("plane");
 	enemyModel_ = Model::CreateFromOBJ("enemy");
 	
 	// jsonファイルの関数
 	SceneJson();
+
 
 }
 
@@ -139,6 +145,7 @@ void GameScene::Update() {
 	}
 	playerTransform_.TransferMatrix();
 	planeTransform_.TransferMatrix();
+	camera_.UpdateMatrix();
 
 }
 
